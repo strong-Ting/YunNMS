@@ -25,7 +25,7 @@ SECRET_KEY = 'wz^l3ees0#5@f-kx9%ejc*&jir5g4lwg0lhh^2$0fxidi0&hc@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_mongoengine',
+    'Frontend',
     'Permission',
     'User',
     'Cisco'
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'YunNMS.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
