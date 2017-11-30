@@ -1,0 +1,13 @@
+{% extends '../../Forms/ModalForm.html' %}
+{% load templang %}
+{% block divId %}modUser{% endblock %}
+{% block formId %}modUserForm{% endblock %}
+{% block action %}user/A_ModifyI_{{ id }}/{% endblock %}
+{% block head %}<h2>Modify User</h2>{% endblock %}
+{% block body %}
+  {{ modUserForm.as_p }}
+{% endblock %}
+{% block foot %}
+  <button onclick="setTimeout(function() { location.href='/backend/user/'}, 500);" class="btn btn-error" data-dismiss="modal">Cancel</button>
+  <button onclick="setTimeout(function() { document.getElementById('modUserForm').submit() }, 500);" class="btn btn-success" data-dismiss="modal">Confirm</button>
+{% endblock %}

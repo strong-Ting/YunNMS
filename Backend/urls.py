@@ -5,8 +5,8 @@ from Permission import views as per_views
 from Cisco import views as cis_views
 
 urlpatterns = [
-    url(r'^permission', per_views.dashboard),
+    url(r'^permission', include('Permission.urls')),
     url(r'^user', include('User.urls')),
-    url(r'^cisco', cis_views.dashboard),
+    url(r'^cisco', include('Cisco.urls')),
     url(r'$', views.index),
 ]

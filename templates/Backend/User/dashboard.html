@@ -1,10 +1,11 @@
-{% extends 'Backend/app_base.html' %}
+{% extends 'Backend/AppBase.html' %}
 {% load templang %}
 {% block page_title %}User - Dashboard{% endblock %}
 {% block content %}
   <div class="container">
     <div class="row">
-      <button type="button" data-toggle="modal" data-target="#addUser" class="btn btn-primary">New User</button>
+      <button type="button" data-toggle="modal" data-target="#addUser" class="btn btn-primary">New User</button>&nbsp
+      <button type="button" data-toggle="modal" data-target="#batchImport" class="btn btn-primary">Batch Import</button>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -18,7 +19,7 @@
         <tbody>
           {% for each in users %}
           <tr>
-            <td><a href="/backend/user/Delete/{{ each | underscore:"id" }}">Delete</a> / <a href="/backend/user/Modify/{{ each | underscore:"id" }}">Modify</a></td>
+            <td><a href="/backend/user/A_DeleteI_{{ each | underscore:"id" }}/">Delete</a> / <a href="/backend/user/A_ModifyI_{{ each | underscore:"id" }}/">Modify</a></td>
             <td>{{ each | underscore:"id" }}</td>
             <td>{{ each.account }}</td>
             <td>{{ each.name }}</td>
@@ -29,13 +30,16 @@
       </table>
 
       <!-- BEGIN Add User Form -->
-      {% include 'Backend/Forms/modal_form.html' with divId="addUser" formId="addUserForm" action="user/Add/" title="Add User" content=addUserForm.as_p %}
+      {% include 'Backend/User/Forms/BatchImportForm.html' %}
+      <!-- END Add User Form -->
+      <!-- BEGIN Add User Form -->
+      {% include 'Backend/User/Forms/AddUserForm.html' %}
       <!-- END Add User Form -->
       <!-- BEGIN Delete User Form -->
-      {% include 'Backend/User/Forms/DelUserForm.html' with divId="delUser" formId="delUserForm" action="user/ConfirmDelete/"|add:id %}
+      {% include 'Backend/User/Forms/DelUserForm.html' %}
       <!-- END Delete User Form -->
       <!-- BEGIN Modify User Form -->
-      {% include 'Backend/Forms/modal_form.html' with divId="modUser" formId="modUserForm" action="user/Modify/"|add:id title="Modify User" content=modUserForm.as_p %}
+      {% include 'Backend/User/Forms/ModUserForm.html'  %}
       <!-- END Modify User Form -->
     </div>
   </div>

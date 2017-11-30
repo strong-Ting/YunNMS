@@ -1,0 +1,13 @@
+{% extends '../../Forms/ModalForm.html' %}
+{% load templang %}
+{% block divId %}batchImport{% endblock %}
+{% block formId %}batchImportForm{% endblock %}
+{% block action %}user/A_BatchImport/{% endblock %}
+{% block head %}<h2>Batch Import</h2>{% endblock %}
+{% block body %}
+  <textarea name="text" style="width: 100%; height: 50%;"></textarea>
+{% endblock %}
+{% block foot %}
+  <button onclick="setTimeout(function() { location.href='/backend/user/'}, 500);" class="btn btn-error" data-dismiss="modal">Cancel</button>
+  <button onclick="setTimeout(function() { document.getElementById('batchImportForm').submit(); }, 500);" class="btn btn-success" data-dismiss="modal">Submit</button>
+{% endblock %}

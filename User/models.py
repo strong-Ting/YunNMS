@@ -8,8 +8,11 @@ db = client[NMS_settings.MONGODB_DATABASES['YunNMS']['name']]
 col = db['NMS_User']
 
 # DB access method.
-def create(user):
+def insert(user):
     col.insert_one(user)
+
+def insert_many(users):
+    col.insert_many(users)
 
 def remove(user):
     return col.remove(user)

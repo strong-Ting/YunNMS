@@ -1,7 +1,49 @@
 from django import forms
 from django.core.validators import EmailValidator
 
+class ModUserForm(forms.Form):
+    name = forms.CharField(label="Name", required=True, widget=forms.TextInput(attrs=
+      {
+        'id': 'name',
+        'class': 'form-control',
+        'placeholder': 'Name',
+        'type': 'text'
+      }
+    ))
+    email = forms.EmailField(label="Email", required=True, widget=forms.TextInput(attrs=
+      {
+        'id': 'email',
+        'class': 'form-control',
+        'placeholder': 'Email',
+        'type': 'text'
+      }
+    ),validators=[EmailValidator()])
+    account = forms.CharField(label="Account", required=True, widget=forms.TextInput(attrs=
+      {
+        'id': 'account',
+        'class' : 'form-control',
+        'placeholder': 'Account',
+        'type': 'text'
+      }
+    ))
+
 class AddUserForm(forms.Form):
+    name = forms.CharField(label="Name", required=True, widget=forms.TextInput(attrs=
+      {
+        'id': 'name',
+        'class': 'form-control',
+        'placeholder': 'Name',
+        'type': 'text'
+      }
+    ))
+    email = forms.EmailField(label="Email", required=True, widget=forms.TextInput(attrs=
+      {
+        'id': 'email',
+        'class': 'form-control',
+        'placeholder': 'Email',
+        'type': 'text'
+      }
+    ),validators=[EmailValidator()])
     account = forms.CharField(label="Account", required=True, widget=forms.TextInput(attrs=
       {
         'id': 'account',
@@ -25,20 +67,3 @@ class AddUserForm(forms.Form):
         'onclick': 'edit_passwd(this)'
       }
     ))
-    name = forms.CharField(label="Name", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'name',
-        'class': 'form-control',
-        'placeholder': 'Name',
-        'type': 'text'
-      }
-    ))
-    email = forms.EmailField(label="Email", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'email',
-        'class': 'form-control',
-        'placeholder': 'Email',
-        'type': 'text'
-      }
-    ),validators=[EmailValidator()])
-    
