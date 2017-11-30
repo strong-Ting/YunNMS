@@ -19,7 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', include('Frontend.urls')),
-    url(r'^permission/', include('Permission.urls')),
-    url(r'^cisco/', include('Cisco.urls')),
-    url(r'^user/', include('User.urls'))
+    url(r'^backend/', include('Backend.urls')),
 ]

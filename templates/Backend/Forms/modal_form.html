@@ -1,0 +1,26 @@
+      <div class="modal fade in" id="{{ divId }}" role="dialog" tabindex="-1" style="display: none;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form id="{{ formId }}" method={{ method|default:"POST" }} action={{ action|default:"."}}>
+              {% csrf_token %}
+              <div style="padding: 15px; border-bottom: 1px solid rgb(229, 229, 229);">
+                <button class="close" data-dismiss="modal">x</button>
+                {% block head %}
+                <h2>{{ title }}</h2>
+                {% endblock %}
+              </div>
+              <div id="document-modal-body" style="position: relative; padding: 15px;">
+                {% block body %}
+                  {{ content }}
+                {% endblock %}
+              </div>
+              <div style="text-align: right; padding: 15px; border-top: 1px solid rgb(229, 229, 229);">
+                {% block foot %}
+                  <button class="btn btn-error" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success">Submit</button>
+                {% endblock %}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>

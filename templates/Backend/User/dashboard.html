@@ -1,0 +1,64 @@
+{% extends 'Backend/app_base.html' %}
+{% load templang %}
+{% block page_title %}User - Dashboard{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <button type="button" data-toggle="modal" data-target="#addUser" class="btn btn-primary">New User</button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>_id</th>
+            <th>Account</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for each in users %}
+          <tr>
+            <td><a href="/backend/user/Delete/{{ each | underscore:"id" }}">Delete</a> / <a href="/backend/user/Modify/{{ each | underscore:"id" }}">Modify</a></td>
+            <td>{{ each | underscore:"id" }}</td>
+            <td>{{ each.account }}</td>
+            <td>{{ each.name }}</td>
+            <td>{{ each.email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- BEGIN Add User Form -->
+      {% include 'Backend/Forms/modal_form.html' with divId="addUser" formId="addUserForm" action="user/Add/" title="Add User" content=addUserForm.as_p %}
+      <!-- END Add User Form -->
+      <!-- BEGIN Delete User Form -->
+      {% include 'Backend/User/Forms/DelUserForm.html' with divId="delUser" formId="delUserForm" action="user/ConfirmDelete/"|add:id %}
+      <!-- END Delete User Form -->
+      <!-- BEGIN Modify User Form -->
+      {% include 'Backend/Forms/modal_form.html' with divId="modUser" formId="modUserForm" action="user/Modify/"|add:id title="Modify User" content=modUserForm.as_p %}
+      <!-- END Modify User Form -->
+    </div>
+  </div>
+{% endblock %}
+{% block body_bottom %}
+  <script>
+    function edit_passwd(checkBox) {
+      var passwdField = document.getElementById('passwd');
+      if(checkBox.checked) {
+        passwdField.removeAttribute('disabled');
+      } else {
+        passwdField.value = '';
+        passwdField.setAttribute('disabled', 'disabled');
+      }
+    }
+    {% if action == 'Modify' %}
+      $(window).on('load', function() {
+        $('#modUser').modal('show');
+      });
+    {% elif action == 'Delete' %}
+      $(window).on('load', function() {
+        $('#delUser').modal('show');
+      });
+    {% endif %}
+  </script>
+{% endblock %}

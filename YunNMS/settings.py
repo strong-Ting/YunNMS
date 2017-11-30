@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_mongoengine',
     'Frontend',
+    'Backend',
     'Permission',
     'User',
-    'Cisco'
+    'Cisco',
 ]
 
 MIDDLEWARE = [
