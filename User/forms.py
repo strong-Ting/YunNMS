@@ -2,40 +2,40 @@ from django import forms
 from django.core.validators import EmailValidator
 
 field = [
-    "name": {
+    {
         "id": "name",
         "name": "name",
         "label": "input",
         "default": None,
         "elements": [
-            "class": "form-control",
-            "type": "text",
-            "placeholder": "Name"
+            { "class": "form-control" },
+            { "type": "text" },
+            { "placeholder": "Name" }
         ]
     },
-    "email": {
+    {
         "id": "email",
         "name": "email",
         "default": None,
         "label": "input",
         "elemets": [
-            "class": "form-control",
-            "type": "text",
-            "placeholder": "Email"
+            { "class": "form-control" },
+            { "type": "text" },
+            { "placeholder": "Email" }
         ]
     },
-    "account": {
+    {
         "id": "account",
         "name": "account",
         "label": "input",
         "default": None,
         "elements": [
-           "class": "form-control",
-           "type": "text",
-           "placeholder": "Account"
+           { "class": "form-control" },
+           { "type": "text" },
+           { "placeholder": "Account" }
         ]
     },
-    "status": {
+    {
         "id": "status",
         "name": "status",
         "label": ""
@@ -43,9 +43,9 @@ field = [
 ]
 
 form = [
-    "AddUserForm": ["name", "email", "account"],
-    "ModUserForm": ["name", "email"],
-    "DelUserForm": ["account"]
+    {"AddUserForm": ["name", "email", "account"]},
+    {"ModUserForm": ["name", "email"]},
+    {"DelUserForm": ["account"]}
 ]
 
 
