@@ -1,6 +1,54 @@
 from django import forms
 from django.core.validators import EmailValidator
 
+field = [
+    "name": {
+        "id": "name",
+        "name": "name",
+        "label": "input",
+        "default": None,
+        "elements": [
+            "class": "form-control",
+            "type": "text",
+            "placeholder": "Name"
+        ]
+    },
+    "email": {
+        "id": "email",
+        "name": "email",
+        "default": None,
+        "label": "input",
+        "elemets": [
+            "class": "form-control",
+            "type": "text",
+            "placeholder": "Email"
+        ]
+    },
+    "account": {
+        "id": "account",
+        "name": "account",
+        "label": "input",
+        "default": None,
+        "elements": [
+           "class": "form-control",
+           "type": "text",
+           "placeholder": "Account"
+        ]
+    },
+    "status": {
+        "id": "status",
+        "name": "status",
+        "label": ""
+    }
+]
+
+form = [
+    "AddUserForm": ["name", "email", "account"],
+    "ModUserForm": ["name", "email"],
+    "DelUserForm": ["account"]
+]
+
+
 class ModUserForm(forms.Form):
     name = forms.CharField(label="Name", required=True, widget=forms.TextInput(attrs=
       {

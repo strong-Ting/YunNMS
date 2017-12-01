@@ -2,18 +2,13 @@
 {% load templang %}
 {% block divId %}delUser{% endblock %}
 {% block formId %}delUserForm{% endblock %}
-{% block action %}user/A_ConfirmDeleteI_{{ id}}/{% endblock %}
+{% block action %}user/A_ConfirmDelete/{% endblock %}
 {% block head %}<h2>Delete User</h2>{% endblock %}
 {% block body %}
-  <p>Are you sure you want to delete this column?</p>
-  <ul style="list-style: none;">
-    <li>_id: {{ id }}</li>
-    <li>Account: {{ document.account }}</li>
-    <li>Name: {{ document.name }}</li>
-    <li>Email: {{ document.email }}</li>
-  </ul>
+  <p>Are you sure you want to delete these column(s)?</p>
+  <ul id="delList" style="list-style: none;"></ul>
 {% endblock %}
 {% block foot %}
-  <button onclick="setTimeout(function() { location.href='/backend/user/'}, 500);" class="btn btn-success" data-dismiss="modal">Cancel</button>
+  <button class="btn btn-success" data-dismiss="modal">Cancel</button>
   <button onclick="setTimeout(function() { document.getElementById('delUserForm').submit();}, 500);" class="btn btn-danger" data-dismiss="modal">Confirm</button>
 {% endblock %}

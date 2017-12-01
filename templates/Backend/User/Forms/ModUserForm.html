@@ -5,9 +5,11 @@
 {% block action %}user/A_ModifyI_{{ id }}/{% endblock %}
 {% block head %}<h2>Modify User</h2>{% endblock %}
 {% block body %}
+  <p>Modify the following _id:</p>
+  <ul id="modList" style="list-style: none;"></ul>
   {{ modUserForm.as_p }}
 {% endblock %}
 {% block foot %}
-  <button onclick="setTimeout(function() { location.href='/backend/user/'}, 500);" class="btn btn-error" data-dismiss="modal">Cancel</button>
+  <button class="btn btn-error" data-dismiss="modal">Cancel</button>
   <button onclick="setTimeout(function() { document.getElementById('modUserForm').submit() }, 500);" class="btn btn-success" data-dismiss="modal">Confirm</button>
 {% endblock %}

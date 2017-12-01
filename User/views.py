@@ -1,12 +1,14 @@
 import json, traceback
 from bson import ObjectId
+from bson.json_util import dumps
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 
 from Backend import utils
 
-from User import models as userModel
-from User import forms as userForm
+from . import apps as userApps
+from . import models as userModel
+from . import forms as userForm
 
 # Create your views here.
 def dashboard(request, action=None, id=None):
@@ -17,6 +19,7 @@ def dashboard(request, action=None, id=None):
                 addUserForm = userForm.AddUserForm(request.POST)
                 if addUserForm.is_valid():
                     document = addUserForm.cleaned_data
+                    document['status'] = 'unauthenticated'
                     del document['passPreset']
                     if userModel.not_duplicate({'account': document['account']}) == False:
                         return HttpResponse({'result': 'Account duplicate.'})
@@ -27,7 +30,9 @@ def dashboard(request, action=None, id=None):
                 else:
                     return JsonResponse({'result' : 'Form invalid.'})
             elif action == 'ConfirmDelete':
-                userModel.remove({'_id': ObjectId(id)})
+                for key, value in request.POST.items():
+                    if 'input_id_' in key:
+                        userModel.remove({'_id': ObjectId(value)})
             elif action == 'Modify':
                 modUserForm = userForm.ModUserForm(request.POST)
                 if modUserForm.is_valid():
@@ -48,12 +53,16 @@ def dashboard(request, action=None, id=None):
                 pass
             return redirect('/backend/user/')
         else:
+            collExtSchema = userApps.collExtSchema
             if action == 'Modify':
                 modUserForm = userForm.ModUserForm(userModel.find_one({'_id': ObjectId(id)}))
-            elif action == 'Delete':
-                document = userModel.find_one({'_id': ObjectId(id)})
+            elif action == 'ExportJson':
+                downloadResponse = HttpResponse(dumps(users), content_type='application/json')
+                downloadResponse['Content-Disposition'] = 'attachment; filename=export.json'
+                return downloadResponse
             else:
                 addUserForm = userForm.AddUserForm()
+                modUserForm = userForm.ModUserForm()
         return render(request, 'Backend/User/dashboard.html', locals())
     except:
         traceReport = traceback.format_exc()
