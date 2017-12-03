@@ -16,34 +16,24 @@ def dashboard(request, action=None, id=None):
         users = userModel.find_all(None)
         if request.method == 'POST':
             if action == 'Add':
-                addUserForm = userForm.AddUserForm(request.POST)
-                if addUserForm.is_valid():
-                    document = addUserForm.cleaned_data
-                    document['status'] = 'unauthenticated'
-                    del document['passPreset']
-                    if userModel.not_duplicate({'account': document['account']}) == False:
-                        return HttpResponse({'result': 'Account duplicate.'})
-                    elif userModel.not_duplicate({'email': document['email']}) == False:
-                        return HttpResponse({'result': 'Email duplicated.'})
-                    else:
-                        userModel.insert(document)
+                result = userForm.UserForm(request.POST, 'AddUserForm', 'C')
+                if 'result' in result and result['result'] == None:
+                    return JsonResponse({'result': 'Data error'}) 
                 else:
-                    return JsonResponse({'result' : 'Form invalid.'})
+                    result['status'] = 'un-authenticated'
+                    userModel.insert(result)
             elif action == 'ConfirmDelete':
                 for key, value in request.POST.items():
                     if 'input_id_' in key:
                         userModel.remove({'_id': ObjectId(value)})
             elif action == 'Modify':
-                modUserForm = userForm.ModUserForm(request.POST)
-                if modUserForm.is_valid():
-                    origin_doc = userModel.find_one({'_id': ObjectId(id)})
-                    document = modUserForm.cleaned_data
-                    if origin_doc['email'] != document['email'] and userModel.not_duplicate({'email': document['email']}) == False:
-                        return HttpResponse({'result': 'Email duplicated.'})
-                    else:
-                        userModel.update({'_id': ObjectId(id)}, document)
+                result = userForm.UserForm(request.POST, 'ModUserForm', 'U')
+                if 'result' in result and reault['result'] == None:
+                    return HttpResponse({'result': 'Data error'}) 
                 else:
-                    return JsonResponse({'result' : 'Form invalid.'})
+                    for key, value in request.POST.items():
+                        if 'input_id_' in key:
+                            userModel.update({'_id': ObjectId(value)}, result)
             elif action == 'BatchImport':
                 docJson = request.POST.get('text').replace('\'', '"')
                 if utils.is_json(docJson):
@@ -54,15 +44,12 @@ def dashboard(request, action=None, id=None):
             return redirect('/backend/user/')
         else:
             collExtSchema = userApps.collExtSchema
-            if action == 'Modify':
-                modUserForm = userForm.ModUserForm(userModel.find_one({'_id': ObjectId(id)}))
-            elif action == 'ExportJson':
+            form = userForm.form
+            field = userForm.field
+            if action == 'ExportJson':
                 downloadResponse = HttpResponse(dumps(users), content_type='application/json')
                 downloadResponse['Content-Disposition'] = 'attachment; filename=export.json'
                 return downloadResponse
-            else:
-                addUserForm = userForm.AddUserForm()
-                modUserForm = userForm.ModUserForm()
         return render(request, 'Backend/User/dashboard.html', locals())
     except:
         traceReport = traceback.format_exc()

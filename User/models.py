@@ -7,6 +7,12 @@ client = connect(NMS_settings.MONGODB_DATABASES['YunNMS']['host'])
 db = client[NMS_settings.MONGODB_DATABASES['YunNMS']['name']]
 col = db['NMS_User']
 
+# CreateReadUdapteDelete
+action = {
+    "account": { "C": "unique", "R": None, "U": "unique", "D": None },
+    'email': { "C": "unique", "R": None, "U": "unique", "D": None }
+}
+
 # DB access method.
 def insert(user):
     col.insert_one(user)
@@ -26,6 +32,7 @@ def find_all(user):
 def find_one(user):
     return col.find_one(user)
 
-def not_duplicate(user):
-    return True if col.find(user).count() == 0 else False
+def not_duplicate(user, incSelf=False):
+    count = col.find(user).count()
+    return True if count <= (1 if incSelf else 0) else False
 # Create your models here.

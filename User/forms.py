@@ -1,117 +1,108 @@
 from django import forms
 from django.core.validators import EmailValidator
 
-field = [
-    {
+from . import models
+
+field = {
+    "name": {
         "id": "name",
         "name": "name",
         "label": "input",
-        "default": None,
-        "elements": [
-            { "class": "form-control" },
-            { "type": "text" },
-            { "placeholder": "Name" }
-        ]
+        "elements": {
+            "class": "form-control",
+            "type": "text",
+            "placeholder": "Name"
+        }
     },
-    {
+    "email": {
         "id": "email",
         "name": "email",
-        "default": None,
         "label": "input",
-        "elemets": [
-            { "class": "form-control" },
-            { "type": "text" },
-            { "placeholder": "Email" }
-        ]
+        "elements": {
+            "class": "form-control",
+            "type": "text",
+            "placeholder": "Email"
+        }
     },
-    {
+    "account": {
         "id": "account",
         "name": "account",
         "label": "input",
-        "default": None,
-        "elements": [
-           { "class": "form-control" },
-           { "type": "text" },
-           { "placeholder": "Account" }
-        ]
+        "elements": {
+           "class": "form-control",
+           "type": "text",
+           "placeholder": "Account"
+        }
     },
-    {
+    "status": {
         "id": "status",
         "name": "status",
-        "label": ""
+        "label": "select",
+        "value": [
+            { 
+                "label": "option",
+                "value": "Status",
+                "elements": {
+                    "value": "",
+                    "selected": "selected"
+                }
+            },
+            { 
+                "label": "option",
+                "value": "un-authenticated",
+                "elements": { "value": "unauthenticated" }
+            },
+            {
+                "label": "option",
+                "value": "authenticated",
+                "elements": { "value": "authenticated" }
+            }
+        ],
+        "elements": {
+            "class": "form-control"
+        }
+    },
+    "text": {
+        "id": "text",
+        "name": "text",
+        "label": "textarea",
+        "elements": {
+            "style": "width: 100%; height: *;",
+            "rows": "15"
+        }
     }
-]
+}
 
-form = [
-    {"AddUserForm": ["name", "email", "account"]},
-    {"ModUserForm": ["name", "email"]},
-    {"DelUserForm": ["account"]}
-]
+form = {
+    "AddUserForm": {
+        "method": "POST",
+        "action": "user/A_Add/",
+        "fields":  ["name", "email", "account"]
+    },
+    "ModUserForm": {
+        "method": "POST",
+        "action": "user/A_Modify/",
+        "fields": ["name", "email", "status"]
+    },
+    "DelUserForm": {
+        "method": "POST",
+        "action": "user/A_Delete/",
+        "fields": ["account"]
+    },
+    "BatchImportForm": {
+        "method": "POST",
+        "action": "user/A_BatchImport/",
+        "fields": ["text"]
+    }
+}
 
 
-class ModUserForm(forms.Form):
-    name = forms.CharField(label="Name", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'name',
-        'class': 'form-control',
-        'placeholder': 'Name',
-        'type': 'text'
-      }
-    ))
-    email = forms.EmailField(label="Email", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'email',
-        'class': 'form-control',
-        'placeholder': 'Email',
-        'type': 'text'
-      }
-    ),validators=[EmailValidator()])
-    account = forms.CharField(label="Account", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'account',
-        'class' : 'form-control',
-        'placeholder': 'Account',
-        'type': 'text'
-      }
-    ))
-
-class AddUserForm(forms.Form):
-    name = forms.CharField(label="Name", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'name',
-        'class': 'form-control',
-        'placeholder': 'Name',
-        'type': 'text'
-      }
-    ))
-    email = forms.EmailField(label="Email", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'email',
-        'class': 'form-control',
-        'placeholder': 'Email',
-        'type': 'text'
-      }
-    ),validators=[EmailValidator()])
-    account = forms.CharField(label="Account", required=True, widget=forms.TextInput(attrs=
-      {
-        'id': 'account',
-        'class' : 'form-control',
-        'placeholder': 'Account',
-        'type': 'text'
-      }
-    ))
-    passwd = forms.CharField(label="Passwd", required=False, widget=forms.TextInput(attrs=
-      {
-        'id': 'passwd',
-        'class': 'form-control',
-        'disabled': 'disabled',
-        'type': 'password'
-      }
-    ))
-    passPreset = forms.CharField(required=False, widget=forms.TextInput(attrs=
-      {
-        'class': 'form-control',
-        'type': 'checkbox',
-        'onclick': 'edit_passwd(this)'
-      }
-    ))
+def UserForm(data, formName, act):
+    newDoc = {};
+    for each in form[formName]['fields']:
+        if each in models.action:
+            action = models.action[each][act]
+            if action == 'unique' and models.not_duplicate({ each: data[each]}, True if act == 'U' else False) == False:
+                return {'result': None}
+        newDoc[each] = data[each]
+    return newDoc

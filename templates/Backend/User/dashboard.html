@@ -2,6 +2,7 @@
 {% load templang %}
 {% block page_title %}User - Dashboard{% endblock %}
 {% block content %}
+    {{ users.status.count }}
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -119,7 +120,6 @@
         var modForm = document.getElementById('modUserForm');
         modForm.elements.namedItem('name').value = data.name;
         modForm.elements.namedItem('email').value = data.email;
-        modForm.elements.namedItem('account').value = data.account;
         $('#modUser').modal('show');
     };
 

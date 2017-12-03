@@ -2,12 +2,17 @@
 {% load templang %}
 {% block divId %}modUser{% endblock %}
 {% block formId %}modUserForm{% endblock %}
-{% block action %}user/A_ModifyI_{{ id }}/{% endblock %}
+{% block action %}{{ form.ModUserForm.action }}{% endblock %}
+{% block method %}{{ form.ModUserForm.method }}{% endblock %}
 {% block head %}<h2>Modify User</h2>{% endblock %}
 {% block body %}
   <p>Modify the following _id:</p>
   <ul id="modList" style="list-style: none;"></ul>
-  {{ modUserForm.as_p }}
+  {% for each in form.ModUserForm.fields %}
+    <div class="form-group">
+      {{ field | genDOM:each | safe }}
+    </div>
+  {% endfor %}
 {% endblock %}
 {% block foot %}
   <button class="btn btn-error" data-dismiss="modal">Cancel</button>
