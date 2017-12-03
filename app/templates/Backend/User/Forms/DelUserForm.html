@@ -1,0 +1,14 @@
+{% extends '../../Forms/ModalForm.html' %}
+{#% load templang %#}
+{% block divId %}delUser{% endblock %}
+{% block formId %}delUserForm{% endblock %}
+{% block action %}user/A_ConfirmDelete/{% endblock %}
+{% block head %}<h2>Delete User</h2>{% endblock %}
+{% block body %}
+  <p>Are you sure you want to delete these column(s)?</p>
+  <ul id="delList" style="list-style: none;"></ul>
+{% endblock %}
+{% block foot %}
+  <button class="btn btn-success" data-dismiss="modal">Cancel</button>
+  <button onclick="setTimeout(function() { document.getElementById('delUserForm').submit();}, 500);" class="btn btn-danger" data-dismiss="modal">Confirm</button>
+{% endblock %}

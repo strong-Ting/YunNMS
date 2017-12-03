@@ -1,0 +1,18 @@
+{% extends '../../Forms/ModalForm.html' %}
+{#% load templang %#}
+{% block divId %}addUser{% endblock %}
+{% block formId %}addUserForm{% endblock %}
+{% block method %}{{ form.AddUserForm.method }}{% endblock %}
+{% block action %}{{ form.AddUserForm.action }}{% endblock %}
+{% block head %}<h2>Add User</h2>{% endblock %}
+{% block body %}
+  {% for each in form.AddUserForm.fields %}
+    <div class="form-group">
+      {#{ field | genDOM:each | safe }#}
+    </div>
+  {% endfor %}
+{% endblock %}
+{% block foot %}
+  <button class="btn btn-error" data-dismiss="modal">Cancel</button>
+  <button onclick="setTimeout(function() { document.getElementById('addUserForm').submit(); }, 500);" class="btn btn-success" data-dismiss="modal">Submit</button>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'Backend/AppBase.html' %}
+{#% load templang %#}
+{% block page_title %}User - Dashboard{% endblock %}
+{% block content %}
+    {{ users.status.count }}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header" style="padding-bottom: 0px; margin: 10px 0 15px; border-bottom: 3px solid #353535;">
+          <h1 class="page-title">User - Dashboard</h1>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <canvas id="chart" ></canvas>
+      </div>
+      <div class="col-md-12">
+        <p>
+          <button type="button" data-toggle="modal" data-target="#addUser" class="btn btn-primary">New User</button>
+          <button type="button" data-toggle="modal" data-target="#delUser" class="btn btn-primary">Delete User</button>
+          <button type="button" data-toggle="modal" data-target="#modUser" class="btn btn-primary">Modify User</button>
+          <button type="button" data-toggle="modal" data-target="#batchImport" class="btn btn-primary">Batch Import</button>
+          <button type="button" onclick="location.href='/backend/user/A_ExportJson/'" class="btn btn-warning">Export Json</button>
+        </p>
+        <div class="table-responsive" style="cursor: pointer; position: relative; padding-bottom: 30px;">
+          <table id="userTable" class="table table-striped" cellsapcing="0" width="100%" style="border-top-color: #337ab7; border-top-width: 5px; border-top-style: solid; border-bottom-color: #337ab7; border-bottom-width: 5px; border-bottom-style: solid;">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>_id</th>
+                <th>Status</th>
+                <th>Account</th>
+                <th>Name</th>
+                <th>Email</th>
+                {% for each in collExtSchema %}
+                  <th>{{ each }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for each in users %}
+              <tr>
+                <td style="white-space:nowrap;">
+                <input type="checkbox"onclick="addList('{{ each }}')"/>
+                <button class="btn btn-primary btn-sm" onclick="fillModForm('{{ each }}', {{ each }});">Modify</button>
+                </td>
+                <td>{{ each }}</td>
+                <td>{{ each }}</td>
+                <td>{{ each }}</td>
+                <td>{{ each }}</td>
+                <td>{{ each }}</td>
+                {% for schema in collExtSchema %}
+                  <td>{{ each}}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BEGIN Add User Form -->
+      {#% include 'Backend/User/Forms/BatchImportForm.html' %}
+      <!-- END Add User Form -->
+      <!-- BEGIN Add User Form -->
+      {% include 'Backend/User/Forms/AddUserForm.html' %}
+      <!-- END Add User Form -->
+      <!-- BEGIN Delete User Form -->
+      {% include 'Backend/User/Forms/DelUserForm.html' %}
+      <!-- END Delete User Form -->
+      <!-- BEGIN Modify User Form -->
+      {% include 'Backend/User/Forms/ModUserForm.html'  %#}
+      <!-- END Modify User Form -->
+    </div>
+  </div>
+{% endblock %}
+{% block body_bottom %}
+  <script>
+    function drawChart() {
+        var ctx = document.getElementById('chart').getContext('2d');
+        var datas = {
+            datasets: [{
+                data: [30, 50, 100, 40, 120 ],
+                backgroundColor: ["#F7464A", "#E2EAE9", "#D4CCC5","#949FB1", "#4D5360"],
+            }],
+            labels: ["Label1", "Label2", "Label3", "Label4", "Label5"]
+        };
+        var defaults = {
+            responsive: true,
+            legend: { position: 'bottom' },
+            animation: {
+                easing: 'easeInOutQuart',
+                duration: 1000
+            }
+        };
+        var ch = new Chart(ctx, { type: 'doughnut', data: datas, options: defaults});
+        var ch2 = new Chart(ctx, { type: 'doughnut', data: datas, options: defaults});
+    };
+
+    function addList(id) {
+        var delList = document.getElementById('delList');
+        var modList = document.getElementById('modList');
+        if(document.getElementById('li_id_' + id)) {
+            document.getElementById('li_id_' + id).remove();
+        } else {
+            var input = document.createElement('input');
+            var li = document.createElement('li');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('value', id);
+            input.setAttribute('name', 'input_id_' + id);
+
+            li.setAttribute('id', 'li_id_' + id);
+            li.appendChild(input);
+            li.appendChild(document.createTextNode('_id :' + id));
+            delList.appendChild(li);
+            modList.appendChild(li.cloneNode(true));
+        }
+    };
+
+    function fillModForm(id, data) {
+        var modForm = document.getElementById('modUserForm');
+        modForm.elements.namedItem('name').value = data.name;
+        modForm.elements.namedItem('email').value = data.email;
+        $('#modUser').modal('show');
+    };
+
+    $(document).ready(function() {
+      $('#userTable').DataTable();
+      document.getElementById('userTable_length').className += ' form-inline';
+      document.getElementById('userTable_length').style.paddingBottom = '5px';
+      document.getElementById('userTable_filter').className += ' form-inline';
+      document.getElementById('userTable_filter').style.paddingBottom = '5px';
+      document.getElementById('userTable_filter').style.position = 'absolute';
+      document.getElementById('userTable_filter').style.right = '15px';
+      document.getElementById('userTable_paginate').style.position = 'absolute';
+      document.getElementById('userTable_paginate').style.right = '15px';
+
+      drawChart();
+    });
+    function edit_passwd(checkBox) {
+      var passwdField = document.getElementById('passwd');
+      if(checkBox.checked) {
+        passwdField.removeAttribute('disabled');
+      } else {
+        passwdField.value = '';
+        passwdField.setAttribute('disabled', 'disabled');
+      }
+    }
+    {% if action == 'Modify' %}
+      $(window).on('load', function() {
+        $('#modUser').modal('show');
+      });
+    {% elif action == 'Delete' %}
+      $(window).on('load', function() {
+        $('#delUser').modal('show');
+      });
+    {% endif %}
+  </script>
+{% endblock %}
