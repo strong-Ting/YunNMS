@@ -1,4 +1,4 @@
-{% extends '../../Forms/ModalForm.html' %}
+{% extends 'Backend/Forms/ModalForm.html' %}
 {#% load templang %#}
 {% block divId %}modUser{% endblock %}
 {% block formId %}modUserForm{% endblock %}
@@ -10,7 +10,7 @@
   <ul id="modList" style="list-style: none;"></ul>
   {% for each in form.ModUserForm.fields %}
     <div class="form-group">
-      {#{ field | genDOM:each | safe }#}
+      {{ field | genDOM(each) | safe }}
     </div>
   {% endfor %}
 {% endblock %}

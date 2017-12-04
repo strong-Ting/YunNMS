@@ -2,7 +2,6 @@
 {#% load templang %#}
 {% block page_title %}User - Dashboard{% endblock %}
 {% block content %}
-    {{ users.status.count }}
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -19,7 +18,7 @@
           <button type="button" data-toggle="modal" data-target="#delUser" class="btn btn-primary">Delete User</button>
           <button type="button" data-toggle="modal" data-target="#modUser" class="btn btn-primary">Modify User</button>
           <button type="button" data-toggle="modal" data-target="#batchImport" class="btn btn-primary">Batch Import</button>
-          <button type="button" onclick="location.href='/backend/user/A_ExportJson/'" class="btn btn-warning">Export Json</button>
+          <button type="button" onclick="location.href='ExportJson/'" class="btn btn-warning">Export Json</button>
         </p>
         <div class="table-responsive" style="cursor: pointer; position: relative; padding-bottom: 30px;">
           <table id="userTable" class="table table-striped" cellsapcing="0" width="100%" style="border-top-color: #337ab7; border-top-width: 5px; border-top-style: solid; border-bottom-color: #337ab7; border-bottom-width: 5px; border-bottom-style: solid;">
@@ -40,16 +39,16 @@
               {% for each in users %}
               <tr>
                 <td style="white-space:nowrap;">
-                <input type="checkbox"onclick="addList('{{ each }}')"/>
-                <button class="btn btn-primary btn-sm" onclick="fillModForm('{{ each }}', {{ each }});">Modify</button>
+                <input type="checkbox"onclick="addList('{{ each | underscore("id") }}')"/>
+                <button class="btn btn-primary btn-sm" onclick="fillModForm('{{ each | underscore("id") }}', {{ each | get("_id") | safe }});">Modify</button>
                 </td>
-                <td>{{ each }}</td>
-                <td>{{ each }}</td>
-                <td>{{ each }}</td>
-                <td>{{ each }}</td>
-                <td>{{ each }}</td>
+                <td>{{ each | underscore("id") }}</td>
+                <td>{{ each | dictGet("status") }}</td>
+                <td>{{ each | dictGet("account") }}</td>
+                <td>{{ each | dictGet("name") }}</td>
+                <td>{{ each | dictGet("email") }}</td>
                 {% for schema in collExtSchema %}
-                  <td>{{ each}}</td>
+                  <td>{{ each | dictGet(schema) }}</td>
                 {% endfor %}
               </tr>
               {% endfor %}
@@ -59,7 +58,7 @@
       </div>
 
       <!-- BEGIN Add User Form -->
-      {#% include 'Backend/User/Forms/BatchImportForm.html' %}
+      {% include 'Backend/User/Forms/BatchImportForm.html' %}
       <!-- END Add User Form -->
       <!-- BEGIN Add User Form -->
       {% include 'Backend/User/Forms/AddUserForm.html' %}
@@ -68,7 +67,7 @@
       {% include 'Backend/User/Forms/DelUserForm.html' %}
       <!-- END Delete User Form -->
       <!-- BEGIN Modify User Form -->
-      {% include 'Backend/User/Forms/ModUserForm.html'  %#}
+      {% include 'Backend/User/Forms/ModUserForm.html'  %}
       <!-- END Modify User Form -->
     </div>
   </div>

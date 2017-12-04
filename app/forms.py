@@ -74,22 +74,22 @@ field = {
 form = {
     "AddUserForm": {
         "method": "POST",
-        "action": "user/A_Add/",
+        "action": "Add/",
         "fields":  ["name", "email", "account"]
     },
     "ModUserForm": {
         "method": "POST",
-        "action": "user/A_Modify/",
+        "action": "Modify/",
         "fields": ["name", "email", "status"]
     },
     "DelUserForm": {
         "method": "POST",
-        "action": "user/A_Delete/",
+        "action": "Delete/",
         "fields": ["account"]
     },
     "BatchImportForm": {
         "method": "POST",
-        "action": "user/A_BatchImport/",
+        "action": "BatchImport/",
         "fields": ["text"]
     }
 }

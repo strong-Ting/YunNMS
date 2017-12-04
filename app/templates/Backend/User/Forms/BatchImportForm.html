@@ -1,4 +1,4 @@
-{% extends '../../Forms/ModalForm.html' %}
+{% extends 'Backend/Forms/ModalForm.html' %}
 {#% load templang %#}
 {% block divId %}batchImport{% endblock %}
 {% block formId %}batchImportForm{% endblock %}
@@ -8,7 +8,7 @@
 {% block body %}
   {% for each in form.BatchImportForm.fields %}
     <div class="form-group">
-      {#{ field | genDOM:each | safe }#}
+      {{ field | genDOM(each) | safe }}
     </div>
   {% endfor %}
 {% endblock %}

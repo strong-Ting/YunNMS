@@ -1,8 +1,8 @@
       <div class="modal fade in" id="{% block divId %}{{ divId }}{% endblock %}" role="dialog" tabindex="-1" style="display: none;" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <form id="{% block formId %}{{ formId }}{% endblock %}" method={% block method %}{{ method|default:"POST" }}{% endblock %} action={% block action %}{{ action|default:"."}}{% endblock %}>
-              {% csrf_token %}
+            <form id="{% block formId %}{{ formId }}{% endblock %}" method={% block method %}{{ method|default("POST") }}{% endblock %} action={% block action %}{{ action|default(".")}}{% endblock %}>
+              {#% csrf_token %#}
               <div style="padding: 15px; border-bottom: 1px solid rgb(229, 229, 229);">
                 <button class="close" data-dismiss="modal">x</button>
                 {% block head %}
